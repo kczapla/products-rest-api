@@ -1,7 +1,7 @@
 import json
+import pprint
 import psycopg2
 import urllib.request
-import pprint
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -29,9 +29,11 @@ def add_products_to_db(cur, temp, val):
     cur.execute(temp, val)
 
 
-def scrap_desired_pair(articles):
+def scrap_desired_pair(articles, limit=100):
     products = articles['content']
-    for product in products:
+    for c, product in enumerate(products):
+        if c > limit:
+            break
         name = product['name']
         brand = product['brand']['name']
         price = product['units'][0]['price']['value']
